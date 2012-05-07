@@ -1,2 +1,1 @@
-Choreographic-Grid
-==================
+# Choreographic Grid

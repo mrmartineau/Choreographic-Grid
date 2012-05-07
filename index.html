@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>The Choreographic Grid by Zander Martineau</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="css/shared.css">
+	<link rel="stylesheet" href="css/choreographic-grid.css">
+</head>
+<body id="grid" class="show-grid">
+
+	<div class="container">
+
+		<!--  ==============  -->
+		<!--  === HEADER ===  -->
+		<!--  ==============  -->
+		<header id="masthead" role="banner">
+			<h1>The Choreographic Grid</h1>
+		</header>
+
+
+		<!--  ====================  -->
+		<!--  === NORMAL GRIDS ===  -->
+		<!--  ====================  -->
+		<h2>Standard Grid</h2>
+		<p>Percentage widths, set your column size by restricting the <code>.container</code></p>
+		<div id="standard">
+
+			<div class="row">
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+				<div class="col span1"></div>
+			</div>
+			<div class="row">
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span3"></div>
+				<div class="col span3"></div>
+				<div class="col span3"></div>
+				<div class="col span3"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+			</div>
+			<div class="row">
+				<div class="col span5"></div>
+				<div class="col span5"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span8"></div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span6"></div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span4"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span12"></div>
+			</div>
+
+		</div>
+
+
+		<!--  =======================  -->
+		<!--  === SPLIT COLUMNS ===  -->
+		<!--  =======================  -->
+		<h2>Choreographic Grid #1: Split columns</h2>
+		<p>On larger screens, split larger column in two, then on smaller screens split them while still keeping the overall grid.</p>
+		<div id="split">
+
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+			</div>
+			<div class="row">
+				<div class="col span5"></div>
+				<div class="col span5"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span8">
+					<div class="row split">
+						<div class="span6 col"></div>
+						<div class="span6 col"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col span6">
+
+					<div class="row split">
+						<div class="span4 col"></div>
+						<div class="span8 col"></div>
+					</div>
+				</div>
+				<div class="col span2"></div>
+				<div class="col span4">
+
+					<div class="row split">
+						<div class="span6 col"></div>
+						<div class="span6 col"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span6"></div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span4"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span12"></div>
+			</div>
+
+		</div>
+
+
+		<!--  =============  -->
+		<!--  === SHUNT ===  -->
+		<!--  =============  -->
+		<h2>Choreographic Grid #2: Shunt</h2>
+		<p>On larger screens, allow smaller columns to site beside other column but on smaller screens 'shunt' them down below its siblings.</p>
+		<div id="shunt">
+
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+			</div>
+			<div class="row">
+				<div class="col span5 mq-alpha-resize-to6"></div>
+				<div class="col span5 mq-alpha-resize-to6 mq-alpha-end mq-beta-resize-to2"></div>
+				<div class="col span2 shunt"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span8">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span4 mq-alpha-resize-to6 mq-alpha-end"></div>
+				<div class="col span2 shunt"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span4"></div>
+				<div class="col span3"></div>
+			</div>
+			<div class="row">
+				<div class="col span6 mq-alpha-resize-to12"></div>
+				<div class="col span4 shunt"></div>
+				<div class="col span2 mq-alpha-resize-to12"></div>
+			</div>
+			<div class="row">
+				<div class="col span12"></div>
+			</div>
+
+		</div>
+
+
+		<!--  ==============  -->
+		<!--  === OFFSET ===  -->
+		<!--  ==============  -->
+		<h2>Choreographic Grid #3: Offset</h2>
+		<p>On larger screens, allow smaller columns to site beside other column but on smaller screens 'shunt' them down below its siblings.</p>
+		<div id="offset">
+
+			<div class="row">
+				<div class="col span2"></div>
+				<div class="col span2 offset2"></div>
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span3"></div>
+				<div class="col span3"></div>
+				<div class="col span3 offset3"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span4 offset2"></div>
+
+			</div>
+			<div class="row">
+				<div class="col span5"></div>
+				<div class="col span5"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span8"></div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span6"></div>
+			</div>
+			<div class="row">
+				<div class="col span6"></div>
+				<div class="col span4"></div>
+				<div class="col span2"></div>
+			</div>
+			<div class="row">
+				<div class="col span12"></div>
+			</div>
+
+		</div>
+
+
+		<!--  =======================  -->
+		<!--  === SOURCE ORDERING ===  -->
+		<!--  =======================  -->
+		<h2>Choreographic Grid #4: Source Ordering</h2>
+		<p>On larger screens, allow smaller columns to site beside other column but on smaller screens 'shunt' them down below its siblings.</p>
+		<div id="offset">
+
+			<div class="row">
+				<div class="col span2 push10"></div>
+				<div class="col span10 pull2"></div>
+			</div>
+			<div class="row">
+				<div class="col span3 push9"></div>
+				<div class="col span9 pull3"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span3 push5"></div>
+				<div class="col span5 pull3"></div>
+			</div>
+			<div class="row">
+				<div class="col span2"></div>
+				<div class="col span10"></div>
+			</div>
+			<div class="row">
+				<div class="col span3"></div>
+				<div class="col span9"></div>
+			</div>
+			<div class="row">
+				<div class="col span4"></div>
+				<div class="col span3"></div>
+				<div class="col span5"></div>
+			</div>
+
+		</div>
+
+
+		<!--  =======================  -->
+		<!--  === CENTRED COLUMNS ===  -->
+		<!--  =======================  -->
+		<h2>Choreographic Grid #5: Centred Columns</h2>
+		<div id="offset">
+
+			<div class="row">
+				<div class="col span1 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span2 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span3 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span4 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span5 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span6 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span7 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span8 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span9 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span10 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span11 centred"></div>
+			</div>
+			<div class="row">
+				<div class="col span12 centred"></div>
+			</div>
+
+		</div>
+
+
+
+	</div><!-- /container -->
+
+	<!--  ==============  -->
+	<!--  === FOOTER ===  -->
+	<!--  ==============  -->
+	<footer id="footer" role="contentinfo">
+		Created by <a href="http://martineau.tv" title="Zander Martineau">Zander Martineau</a> / <a href="http://twitter.com" title="@MrMartineau">@MrMartineau</a> &mdash; <a href="#" id="show-grid-button">Hide Grid</a> or <a href="#" id="show-info-button">Show Info</a>
+	</footer>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="js/tests.js"></script>
+
+</body>
+</html>
