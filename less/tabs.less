@@ -1,0 +1,59 @@
+/*==========================================*/
+/*=== TABS ===*/
+/*==========================================*/
+ul.tabs {
+	padding: 0;
+	margin: 5px 0 0;
+	text-align: center;
+	li {
+		display: block;
+		padding: 0;
+		margin: 3px 0;
+		a {
+			display: block;
+			text-decoration: none;
+			width: auto;
+			padding: 0px 10px;
+			border-radius: 2px;
+			border: 1px solid fadeout(black,60%);
+			font-size: .9em;
+			color: black;
+			font-weight: bold;
+			&.active,&:hover {
+				background: fadeout(black,60%);
+				color: #fff;
+			}
+		}
+	}
+}
+
+ul.tabs_content {
+	margin: 1.5em 0 0 0;
+	padding: 0;
+	list-style-type: none;
+	li {
+		margin: 0;
+		padding: 0;
+		display:none;
+		&.active {
+			display: block;
+		}
+	}
+}
+
+/*=== 768> ===*/
+@media screen and (min-width: 768px) {
+
+	ul.tabs {
+		li {
+			display: inline-block;
+			margin: 0;
+			a {
+				display: block;
+				border-radius: 50px;
+				color: black;
+			}
+		}
+	}
+
+}
