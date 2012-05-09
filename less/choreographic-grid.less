@@ -21,7 +21,7 @@
 	margin-right: (@gridColumnWidth * @shuntSpan) + (@gridGutterWidth * (@shuntSpan - 1));
 }
 .offset(@columnOffset: 1) {
-	margin-left: (@gridColumnWidth * @columnOffset) + (@gridGutterWidth * @columnOffset) + 4.4;
+	margin-left: (@gridColumnWidth * @columnOffset) + (@gridGutterWidth * @columnOffset) + @gridGutterWidth;
 }
 .offsetFirstChild(@columnOffset: 1) {
 	margin-left: (@gridColumnWidth * @columnOffset) + (@gridGutterWidth * @columnOffset);
