@@ -1,4 +1,4 @@
-$('#grid .show-grid .row div').each(function() {
+$('#grid .row div').each(function() {
 	var $spanName = $(this).attr('class'),
 		$html = $(this).html();
 	$(this).html($html + $spanName);
