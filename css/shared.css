@@ -70,7 +70,7 @@ footer a {
 #grid .row div {
   text-indent: -99999em;
 }
-.show-info .row div {
+#grid.show-info .row div {
   text-indent: 0;
   text-align: center;
 }
