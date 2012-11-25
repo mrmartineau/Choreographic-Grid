@@ -1,0 +1,306 @@
+// ==============================
+// === THE CHOREOGRAPHIC GRID ===
+// ==============================
+// GRID CALCULATIONS
+// GRID SETUP
+// MEDIA QUERIES
+//  - ALPHA
+//  - BETA
+// GRID UTILITIES
+//  CENTRED COLUMNS
+
+
+// Settings
+
+
+// Basic Usage
+// <div class="row">
+// 	<div class="col span4"></div>
+// 	<div class="col span8"></div>
+// </div>
+
+
+// ==================
+// === GRID SETUP ===
+// ==================
+
+// Choose your grid options
+$debugQueries         : true;
+$usingPushColumns     : true;
+$usingPullcolumns     : true;
+$usingOffsetcolumns   : true;
+$usingSplitsAndShunts : true;
+
+// Setup grid defaults
+$gridColumnCount      : 12;   // Total column count
+// $gridColumnWidth      : 100;   // [in pixels]
+$gridGutterWidth      : 20;   // [in pixels]
+$gridColumnPadding    : 0;   // [in pixels]
+$gridMaxWidth         : 1000; // [in pixels]
+$gridMargin           : 0;   // [in pixels] Space outside the grid
+
+@function gridColumnWidth() {
+	@return $gridMaxWidth / $gridColumnCount;
+}
+// Grid calculations
+@function gridColumnWidthCalc($colNumber) {
+	@if $gridGutterWidth == 0 {
+		@return percentage($colNumber / $gridColumnCount);
+	} @else{
+		@return percentage( (($colNumber / $gridColumnCount) - gutterCalc(false) ) );
+
+
+
+		// @return percentage( (( $gridMaxWidth / $gridColumnCount ) * $colNumber ) / ( $gridMaxWidth - ($gridMargin * 2) ) );
+		// @return percentage( (gridColumnWidth() / ( $gridMaxWidth - ($gridMargin * 2) ) * $colNumber) );
+		// @return percentage( (($colNumber  * gridColumnWidth() + ($colNumber - 1) * 3.44828) / 1000));
+		// @return percentage( ((100 - gutterCalc(false) * $colNumber) / ($colNumber + 1)) / 100);
+		// @return percentage( (($colNumber * gridColumnWidth()) + (($colNumber - 1) * $gridGutterWidth)) / $gridMaxWidth );
+		// @return percentage( (gridColumnWidth() * $colNumber) + ($gridGutterWidth * ($colNumber - 1) / 1000 ) );
+		// @return percentage( ($colNumber * gridColumnWidth()) / ($gridMaxWidth - ( $gridMargin * 2 )) );
+	}
+}
+
+// $colNumber * gridColumnWidth() + ($colNumber - 1) * $gridGutterWidth
+@mixin columns($columnSpan: 1) {
+	width: gridColumnWidthCalc($columnSpan);
+}
+@function gutterCalc($showUnit: true) {
+	@if $showUnit == true {
+		@return percentage( $gridGutterWidth / $gridMaxWidth );
+	} @else {
+		@return $gridGutterWidth / ( $gridMaxWidth - ($gridMargin * 2) );
+	}
+}
+@mixin shunt($shuntSpan: 1) {
+	margin-right: (gridColumnWidthCalc($shuntSpan) * $shuntSpan) + ($gridGutterWidth * ($shuntSpan - 1));
+}
+@mixin offset($columnOffset: 1) {
+	margin-left: (gridColumnWidthCalc($columnOffset) * $columnOffset) + ($gridGutterWidth * $columnOffset) + $gridGutterWidth;
+}
+@mixin offsetFirstChild($columnOffset: 1) {
+	margin-left: (gridColumnWidthCalc($columnOffset) * $columnOffset) + ($gridGutterWidth * $columnOffset);
+}
+@mixin push($pushOffset: 1) {
+	left: (gridColumnWidthCalc($pushOffset) * $pushOffset) + ($gridGutterWidth * $pushOffset);
+}
+@mixin pull($pullOffset: 1) {
+	right: (gridColumnWidthCalc($pullOffset) * $pullOffset) + ($gridGutterWidth * $pullOffset);
+}
+@mixin gridColumn() {
+	@if $gridGutterWidth > 0 {
+		margin-left: gutterCalc();
+	}
+	@if $gridColumnPadding > 0 {
+		padding: $gridColumnPadding + px;
+	}
+	float: left;
+	min-height: 1px;
+	position: relative;
+	clear: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	&:first-child {
+		margin-left: 0;
+	}
+
+	& + &:last-child { float: right; }
+	& + &.end { float: left; }
+}
+@mixin clearfix {
+	*zoom: 1;
+
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+
+	&:after {
+		clear: both;
+	}
+}
+
+@mixin media-query($mq-title: 'mobile', $bgcolor: transparentize(yellow, .4)) {
+	content: $mq-title;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 30px;
+	line-height: 30px;
+	background-color: $bgcolor;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	z-index: 1000;
+}
+
+
+// ============
+// === GRID ===
+// ============
+.container {
+	padding-left: $gridMargin + px;
+	padding-right: $gridMargin + px;
+	width: 95%;
+	max-width: $gridMaxWidth + px;
+	margin: 0 auto;
+}
+
+.row {
+	width: 100%;
+	margin: 0 auto;
+	@include clearfix;
+
+	// Nested rows
+	& .row {
+		min-width: 0;
+	}
+}
+
+@if $debugQueries == true {
+	body:before {
+		@include media-query("mobile", transparentize(green, .4));
+	}
+}
+
+
+
+// ===========================================
+// === Media queries for responsive design ===
+// ===========================================
+// === 768> ===
+@media screen and (min-width: 768px) {
+	$mediaQueryName : 'mq-alpha';
+	@if $debugQueries == true {
+		body:before {
+			@include media-query($mediaQueryName, transparentize(yellow, .4));
+		}
+	}
+
+	.col {
+		@include gridColumn();
+	}
+
+	// HACK/FIX FOR WEBKIT'S INADEQUATE SUBPIXEL PERCENTAGE CALCULATIONS
+	// In order to work around browsers' different rounding behaviours, Foundation will float the last column in a row to the right so the edge aligns. If your row doesn't have a count that adds up to 12 columns you can tag the last column with class="end" in order to override that behaviour.
+	.col + .col:last-child, .#{$mediaQueryName}-end { float: right; }
+	.col + .col.end { float: left; }
+
+	@for $i from 1 to $gridColumnCount + 1 {
+		.span#{$i}, .#{$mediaQueryName}-resize-to#{$i}  { @include columns($i); }
+	}
+
+	// ==============================================
+	// === OFFSET & SOURCE ORDERING (PUSH & PULL) ===
+	// ==============================================
+	@if $usingOffsetcolumns == true {
+		@for $i from 1 to $gridColumnCount {
+			.row > .offset1 {
+				@include offset($i);
+				&:first-child {
+					@include offsetFirstChild($i);
+				}
+			}
+		}
+	}
+	@if $usingPushColumns == true {
+		@for $i from 2 to $gridColumnCount - 2 {
+			.row > .push#{$i}	{ @include push($i); }
+		}
+	}
+	@if $usingPullcolumns == true {
+		@for $i from 2 to $gridColumnCount - 2 {
+			.row > .pull#{$i}	{ @include pull($i); }
+		}
+	}
+
+	// ====================================
+	// === SPLITTING COLUMNS & SHUNTING ===
+	// ====================================
+	.split .col, .shunt {
+		float:none;
+		margin-left: 0;
+		min-height: 1px;
+		position: relative;
+		width: 100%;
+		clear: both;
+	}
+}
+// === end 768> ===
+
+
+
+// === 992> ===
+@media screen and (min-width: 992px) {
+	$mediaQueryName : 'mq-beta';
+
+	@if $debugQueries == true {
+		body:before {
+			@include media-query($mediaQueryName, transparentize(red, .1));
+		}
+	}
+
+	// ====================
+	// === CHOREOGRAPHY ===
+	// ====================
+	@if $usingSplitsAndShunts == true {
+		.split .col, .shunt {
+			@include gridColumn;
+		}
+
+		// ============
+		// === INFO ===
+		// ============
+		// I need to restate the grid widths & offsets in this media-query because of the cascade. For example, if I add .#{$mediaQueryName}-resize-to8 to a column in #{$mediaQueryName} & I need the the same column to return to it's 'natural' width (.span6 for example) in the wider media-query, there is no other way, that I can see, to do that. One thought I had was to add a body class, using javascript, stating which media-query is currently being viewed, then I can just use that to apply the relevant class. Not sure about this though.
+
+		@for $i from 1 to $gridColumnCount {
+			.span#{$i}, .#{$mediaQueryName}-resize-to#{$i}, .split .span#{$i} { @include columns($i);  }
+		}
+	}
+
+	// Offset Columns
+	@if $usingOffsetcolumns == true {
+		@for $i from 1 to $gridColumnCount {
+			.row > .offset1 {
+				@include offset($i);
+				&:first-child {
+					@include offsetFirstChild($i);
+				}
+			}
+		}
+	}
+
+	// Push Columns
+	@if $usingPushColumns == true {
+		@for $i from 2 to $gridColumnCount - 2 {
+			.row > .#{$mediaQueryName}-push#{$i}, .push#{$i}	{ @include push($i); }
+		}
+	}
+
+	// Pull Columns
+	@if $usingPullcolumns == true {
+		@for $i from 2 to $gridColumnCount - 2 {
+			.row > .#{$mediaQueryName}-pull#{$i}, .pull#{$i}	{ @include pull($i); }
+		}
+	}
+
+	.#{$mediaQueryName}-end { float: right; }
+	.#{$mediaQueryName}-end { float: left; }
+
+
+}
+// === end 992> ===
+
+// =======================
+// === CENTRED COLUMNS ===
+// =======================
+.centered.col, .centred.col { float: none; margin: 0 auto; }
+
+
+img {
+	max-width: 100%;
+}
