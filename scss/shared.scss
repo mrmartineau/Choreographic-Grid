@@ -1,8 +1,8 @@
 * {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	box-sizing: border-box;
+	// -webkit-box-sizing: border-box;
+	// -moz-box-sizing: border-box;
+	// -ms-box-sizing: border-box;
+	// box-sizing: border-box;
 	-webkit-transition:all 0.12s ease-in-out;
 	-moz-transition:all 0.12s ease-in-out;
 	-o-transition:all 0.12s ease-in-out;
@@ -43,6 +43,7 @@ footer {
 
 		div {
 			background-color: transparentize(blue, .93);
+			border: 1px solid transparentize(blue, .8);
 
 			&.split div {
 				background-color: transparentize(teal, .70);
