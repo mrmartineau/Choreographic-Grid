@@ -22,32 +22,38 @@
 // ==================
 
 // Choose your grid options
-$debugQueries         : true;
-$usingPushColumns     : true;
-$usingPullcolumns     : true;
-$usingOffsetcolumns   : true;
-$usingSplitsAndShunts : true;
-
+$debugQueries         : false  !default; // Show the media query debugger at the top of the viewport
+$usingPushPullColumns : true   !default; // Allow columns to be pushed & pulled
+$usingOffsetcolumns   : true   !default; // Allow columns to be offset
+$usingSplitsAndShunts : true   !default; // Use Splits & Shunts for responsive web design
 // Setup grid defaults
-$gridColumnCount      : 12;   // Total column count
-$gridGutterWidth      : 20;   // [in pixels]
-$gridColumnPadding    : 0;   // [in pixels]
-$gridMaxWidth         : 1000; // [in pixels]
-$gridMargin           : 0;   // [in pixels] Space outside the grid
+$gridColumnCount      : 12     !default; // Total column count
+$gridGutterWidth      : 30     !default; // [in pixels]
+$gridMaxWidth         : 1000   !default; // [in pixels]
+$gridMargin           : 0      !default; // [in pixels] Space outside the grid
+// Column Padding
+$gridColumnPadding    : 0      !default; // [in pixels]
+$gridColumnPaddingUnit: '%'    !default; // [in pixels or percent] Specify your unit of measurement for column padding
+$nestedColumnPadding  : false  !default; // Remove padding on nested columns so they are aligned correctly. Set this to [false] to enable it.
 
+// =========================
+// === GRID CALCULATIONS ===
+// =========================
+// CALCULATE COLUMNS WIDTHS
 @function gridColumnWidthCalc($columnSpan: 1, $showUnit: true) {
-	$number-of-blocks-in-container: $gridColumnCount / $columnSpan;
-	$total-width-of-all-gutters:    gutterCalc(false) * ($number-of-blocks-in-container - 1);
-	$total-width-of-all-blocks:     1 - $total-width-of-all-gutters;
-	$width-of-a-single-block:       $total-width-of-all-blocks / $number-of-blocks-in-container;
+	$numberOfBlocksInContainer: $gridColumnCount / $columnSpan;
+	$totalWidthOfAllGutters:    gutterCalc(false) * ($numberOfBlocksInContainer - 1);
+	$totalWidthOfAllBlocks:     1 - $totalWidthOfAllGutters;
+	$widthOfASingleBlock:       $totalWidthOfAllBlocks / $numberOfBlocksInContainer;
 
 	@if $showUnit == true {
-		@return percentage( $width-of-a-single-block );
+		@return percentage( $widthOfASingleBlock );
 	} @else {
-		@return $width-of-a-single-block * 100;
+		@return $widthOfASingleBlock;
 	}
 }
 
+// COLUMN WIDTH MIXIN
 @mixin column($columnSpan: 1) {
 	width: gridColumnWidthCalc($columnSpan, true);
 }
@@ -57,7 +63,7 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 // Usage: gutterCalc() or gutterCalc(false)
 @function gutterCalc($showUnit: true) {
 	@if $showUnit == true {
-		@return percentage( $gridGutterWidth / $gridMaxWidth );
+		@return percentage( $gridGutterWidth / ( $gridMaxWidth - ($gridMargin * 2) ) );
 	} @else {
 		@return $gridGutterWidth / ( $gridMaxWidth - ($gridMargin * 2) );
 	}
@@ -67,28 +73,33 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 // Can be pixels or percent.
 // Default: percent
 // Usage: paddingCalc() or paddingCalc(px)
-@function paddingCalc($unit: '%') {
-	@if $unit == '%' {
+@function paddingCalc() {
+	@if $gridColumnPaddingUnit == '%' {
 		@return percentage( $gridColumnPadding / $gridMaxWidth );
-	} @else {
+	} @else if $gridColumnPaddingUnit == 'px' {
 		@return $gridColumnPadding + px;
 	}
 }
 
+// ================================================================
+// === SHUNTS, OFFSET COLUMNS, COLUMN SOURCE ORDER CALCULATIONS ===
+// ================================================================
 @mixin shunt($shuntSpan: 1) {
 	margin-right: (gridColumnWidthCalc($shuntSpan, false) * $shuntSpan) + ($gridGutterWidth * ($shuntSpan - 1));
 }
 @mixin offset($columnOffset: 1) {
-	margin-left: (gridColumnWidthCalc($columnOffset, false) * $columnOffset) + ($gridGutterWidth * $columnOffset) + $gridGutterWidth;
+	margin-left: percentage( gridColumnWidthCalc($columnOffset, false) * $columnOffset / 100 );
 }
 @mixin offsetFirstChild($columnOffset: 1) {
 	margin-left: (gridColumnWidthCalc($columnOffset, false) * $columnOffset) + ($gridGutterWidth * $columnOffset);
 }
 @mixin push($pushOffset: 1) {
-	left: (gridColumnWidthCalc($pushOffset, false) * $pushOffset) + ($gridGutterWidth * $pushOffset);
+	left: gridColumnWidthCalc($pushOffset, true) + gutterCalc();
+	position: relative;
 }
 @mixin pull($pullOffset: 1) {
-	right: (gridColumnWidthCalc($pullOffset, false) * $pullOffset) + ($gridGutterWidth * $pullOffset);
+	right: gridColumnWidthCalc($pullOffset, true) + gutterCalc();
+	position: relative;
 }
 
 @mixin gridColumn() {
@@ -96,7 +107,7 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 		margin-left: gutterCalc();
 	}
 	@if $gridColumnPadding > 0 {
-		padding: paddingCalc(px);
+		padding: paddingCalc();
 	}
 	float: left;
 	min-height: 1px;
@@ -163,10 +174,16 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 	// Nested rows
 	& .row {
 		min-width: 0;
+
+		@if $nestedColumnPadding == false {
+			.col {
+				padding: 0;
+			}
+		}
 	}
 }
 
-// SHOW MEDIA QUERY DEBUGGER
+// MEDIA QUERY DEBUGGER
 @if $debugQueries == true {
 	body:before {
 		@include media-query("mobile", transparentize(green, .4));
@@ -181,7 +198,9 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 
 // === 768> ===
 @media screen and (min-width: 768px) {
+	// NAME THIS MEDIA QUERY
 	$mediaQueryName : 'mq-alpha';
+
 	@if $debugQueries == true {
 		body:before {
 			@include media-query($mediaQueryName, transparentize(yellow, .4));
@@ -215,13 +234,11 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 			}
 		}
 	}
-	@if $usingPushColumns == true {
-		@for $i from 2 to $gridColumnCount - 2 {
+	@if $usingPushPullColumns == true {
+		@for $i from 2 to $gridColumnCount {
 			.row > .push#{$i}	{ @include push($i); }
 		}
-	}
-	@if $usingPullcolumns == true {
-		@for $i from 2 to $gridColumnCount - 2 {
+		@for $i from 2 to $gridColumnCount {
 			.row > .pull#{$i}	{ @include pull($i); }
 		}
 	}
@@ -244,6 +261,7 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 
 // === 992> ===
 @media screen and (min-width: 992px) {
+	// NAME THIS MEDIA QUERY
 	$mediaQueryName : 'mq-beta';
 
 	@if $debugQueries == true {
@@ -260,9 +278,8 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 			@include gridColumn;
 		}
 
-		// ============
+
 		// === INFO ===
-		// ============
 		// I need to restate the grid widths & offsets in this media-query because of the cascade. For example, if I add .#{$mediaQueryName}-resize-to8 to a column in #{$mediaQueryName} & I need the the same column to return to it's 'natural' width (.span6 for example) in the wider media-query, there is no other way, that I can see, to do that. One thought I had was to add a body class, using javascript, stating which media-query is currently being viewed, then I can just use that to apply the relevant class. Not sure about this though.
 
 		@for $i from 1 to $gridColumnCount {
@@ -286,15 +303,11 @@ $gridMargin           : 0;   // [in pixels] Space outside the grid
 		}
 	}
 
-	// Push Columns
-	@if $usingPushColumns == true {
+	// Push & Pull Columns
+	@if $usingPushPullColumns == true {
 		@for $i from 2 to $gridColumnCount - 2 {
 			.row > .#{$mediaQueryName}-push#{$i}, .push#{$i}	{ @include push($i); }
 		}
-	}
-
-	// Pull Columns
-	@if $usingPullcolumns == true {
 		@for $i from 2 to $gridColumnCount - 2 {
 			.row > .#{$mediaQueryName}-pull#{$i}, .pull#{$i}	{ @include pull($i); }
 		}
