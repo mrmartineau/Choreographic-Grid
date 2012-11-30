@@ -43,6 +43,8 @@ small, aside { font-size: 10px; }
 
 img { display: block; }
 
+code { padding: 2px 4px; color: #d14; background-color: #f7f7f9; border: 1px solid #e1e1e8; }
+
 ul.tabs { padding: 0; margin: 5px 0 0; text-align: center; }
 ul.tabs li { display: block; padding: 0; margin: 3px 0; }
 ul.tabs li a { display: block; text-decoration: none; width: auto; padding: 0px 10px; border-radius: 2px; border: 1px solid #999999; font-size: .9em; color: black; font-weight: bold; }
