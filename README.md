@@ -1,4 +1,9 @@
 # Choreographic Grid
+## Development update
+Development has halted on this repository now. If you still want to use the grid, please have a look at [Kickoff's](https://github.com/tmwagency/kickoff/blob/master/scss/partials/components/_grid.scss) grid as it is based on the Choreographic Grid.
+
+---
+
 ### A CSS grid for content interdigitation
 After having read Trent Walton's article on [Content Choreography](http://trentwalton.com/2011/07/14/content-choreography/) & working on a number of responsive sites, I felt that the current group of CSS grids was lacking in this department - so I [created my own](https://github.com/mrmartineau/Choreographic-Grid).
 
